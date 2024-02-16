@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_todo/models/listmodel.dart';
 
+const int itemMaxLength = 64;
+
 class ListItemCard extends StatefulWidget {
   final int index;
   
@@ -45,6 +47,7 @@ class _ListItemCardState extends State<ListItemCard> {
                 maxLines: null,
                 minLines: null,
                 decoration: null,
+                maxLength: itemMaxLength,
                 controller: controller
               ),
             ),
