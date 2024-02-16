@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_todo/views/listitemcard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +47,24 @@ class _TodoListViewState extends State<TodoListView> {
         onPressed: (){},
         child: const Icon(Icons.add),
       ),
-      body: NothingToSee(),
+      body: const TodoItemList(),
+    );
+  }
+}
+
+class TodoItemList extends StatefulWidget {
+  const TodoItemList({super.key});
+
+  @override
+  State<TodoItemList> createState() => _TodoItemListState();
+}
+
+class _TodoItemListState extends State<TodoItemList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) => ListItemCard()
     );
   }
 }
