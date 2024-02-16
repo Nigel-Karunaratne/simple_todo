@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_todo/models/listmodel.dart';
 
 class ListItemCard extends StatefulWidget {
-  const ListItemCard({super.key});
+  final int index;
+  
+  const ListItemCard({required this.index, super.key});
+
 
   @override
   State<ListItemCard> createState() => _ListItemCardState();
@@ -28,14 +33,15 @@ class _ListItemCardState extends State<ListItemCard> {
             value: false,
             onChanged: (value){}
           ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0), //TODO - change
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0), //TODO - change
               child: TextField(
                 expands: true,
                 maxLines: null,
                 minLines: null,
                 decoration: null,
+                controller: TextEditingController(text: Provider.of<TodoListModel>(context, listen: false).items[widget.index].contents),
               ),
             ),
           ),

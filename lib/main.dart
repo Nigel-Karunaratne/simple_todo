@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:simple_todo/models/listmodel.dart';
 import 'package:simple_todo/views/listitemcard.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +12,17 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider<TodoListModel>(
+      create: (ctx) => TodoListModel([TodoEntry(false, "contents"), TodoEntry(true, "dnasl")]),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const TodoListView(),
       ),
-      home: const TodoListView(),
     );
   }
 }
@@ -61,9 +66,6 @@ class TodoItemList extends StatefulWidget {
 }
 
 class _TodoItemListState extends State<TodoItemList> {
-
-  List<TodoEntry> items = [TodoEntry(false, "Entry 1"), TodoEntry(false, "Entry 2")];
-
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
@@ -71,16 +73,10 @@ class _TodoItemListState extends State<TodoItemList> {
       // itemCount: 10,
       // itemBuilder: (context, index) => ReorderableDragStartListener(index: index, key: Key("$index"), child: ListItemCard()),
       children: [
-        for (int index = 0; index < items.length; index++)
-        ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard())
+        for (int index = 0; index < Provider.of<TodoListModel>(context, listen: true).items.length; index++)
+        ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard(index: index,))
       ],
-      onReorder:(oldIndex, newIndex) {
-        if (oldIndex < newIndex) {
-          newIndex--;
-
-
-        }
-      },
+      onReorder:(oldIndex, newIndex) => Provider.of<TodoListModel>(context, listen: false).swap(oldIndex, newIndex),
     );
   }
 }
