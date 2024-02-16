@@ -30,7 +30,7 @@ class _ListItemCardState extends State<ListItemCard> {
           ),
           const Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(1, 0, 2, 0),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0), //TODO - change
               child: TextField(
                 expands: true,
                 maxLines: null,
@@ -39,7 +39,7 @@ class _ListItemCardState extends State<ListItemCard> {
               ),
             ),
           ),
-          IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+          const Icon(Icons.drag_handle_rounded),
         ],
       ),
     );

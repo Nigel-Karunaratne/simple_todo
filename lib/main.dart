@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_todo/models/listmodel.dart';
 import 'package:simple_todo/views/listitemcard.dart';
 
 void main() {
@@ -60,11 +61,26 @@ class TodoItemList extends StatefulWidget {
 }
 
 class _TodoItemListState extends State<TodoItemList> {
+
+  List<TodoEntry> items = [TodoEntry(false, "Entry 1"), TodoEntry(false, "Entry 2")];
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) => ListItemCard()
+    return ReorderableListView(
+      buildDefaultDragHandles: false,
+      // itemCount: 10,
+      // itemBuilder: (context, index) => ReorderableDragStartListener(index: index, key: Key("$index"), child: ListItemCard()),
+      children: [
+        for (int index = 0; index < items.length; index++)
+        ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard())
+      ],
+      onReorder:(oldIndex, newIndex) {
+        if (oldIndex < newIndex) {
+          newIndex--;
+
+
+        }
+      },
     );
   }
 }
