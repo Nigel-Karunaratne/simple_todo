@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:simple_todo/models/listmodel.dart';
 import 'package:simple_todo/views/listitemcard.dart';
 import 'package:provider/provider.dart';
