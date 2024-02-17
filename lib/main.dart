@@ -69,8 +69,6 @@ class _TodoItemListState extends State<TodoItemList> {
   Widget build(BuildContext context) {
     return ReorderableListView(
       buildDefaultDragHandles: false,
-      // itemCount: 10,
-      // itemBuilder: (context, index) => ReorderableDragStartListener(index: index, key: Key("$index"), child: ListItemCard()),
       children: [
         for (int index = 0; index < Provider.of<TodoListModel>(context, listen: true).items.length; index++)
         ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard(index: index,))
