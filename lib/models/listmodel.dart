@@ -39,6 +39,9 @@ class TodoListModel extends ChangeNotifier {
   }
 
   void swap(int oldIndex, int newIndex) {
+    if(oldIndex == newIndex) {
+      return;
+    }
     if (oldIndex < newIndex) {
       newIndex--;
     }
