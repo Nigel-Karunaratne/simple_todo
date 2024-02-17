@@ -32,15 +32,16 @@ class _ListItemCardState extends State<ListItemCard> {
       //     controller: TextEditingController(text: "String!"),
       //   ),
       // ),
-      child: Row(
-        children: [
-          Checkbox(
-            value: Provider.of<TodoListModel>(context).items[widget.index].completed,
-            onChanged: (value) => Provider.of<TodoListModel>(context, listen: false).updateChecked(widget.index, value!),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0), //TODO - change
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Checkbox(
+              value: Provider.of<TodoListModel>(context).items[widget.index].completed,
+              onChanged: (value) => Provider.of<TodoListModel>(context, listen: false).updateChecked(widget.index, value!),
+            ),
+            const Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
+            Expanded(
               child: TextField(
                 onChanged: (newtext) => Provider.of<TodoListModel>(context, listen: false).updateContents(widget.index, newtext),
                 expands: true,
@@ -51,9 +52,9 @@ class _ListItemCardState extends State<ListItemCard> {
                 controller: controller
               ),
             ),
-          ),
-          const Icon(Icons.drag_handle_rounded),
-        ],
+            const Icon(Icons.drag_handle_rounded),
+          ],
+        ),
       ),
     );
   }
