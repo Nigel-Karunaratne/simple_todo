@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       create: (ctx) => TodoListModel([TodoEntry(false, "contents"), TodoEntry(true, "dnasl")]),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Simple TODO',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
