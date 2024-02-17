@@ -1,18 +1,35 @@
 import 'dart:convert';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_todo/fileio.dart';
 
 class TodoListModel extends ChangeNotifier {
   List<TodoEntry> items;
   bool loaded = true;
+  RestartableTimer? saveTimer;
 
-  TodoListModel(this.items);
+  TodoListModel(this.items){
+    saveTimer = RestartableTimer(const Duration(seconds: 1), () => saveToDisk());
+    saveTimer?.cancel();
+  }
 
   TodoListModel.fromFile() : items=[], loaded = false {
-    updateFromFile();
+    saveTimer = RestartableTimer(const Duration(seconds: 1), () => saveToDisk());
+    saveTimer?.cancel();
+    _updateFromFile();
+  }
+
+  TodoListModel.fromJson(Map<String, dynamic> json) 
+    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1])]/* ,
+      saveTimer = RestartableTimer(const Duration(), () => print("TIMER ERROR: C NOT CREATED")) */;
+
+  void updateContents(int entryIndex, String newText) {
+    items[entryIndex].contents = newText;
+    notifyListeners();
+    saveTimer?.reset();
   }
   
-  void updateFromFile() async {
+  void _updateFromFile() async {
     String contents = await FileIO.readFileFromDocs("list.json");
     if (contents != "") {
       items = TodoListModel.fromJson(jsonDecode(contents)).items;
@@ -23,19 +40,10 @@ class TodoListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  TodoListModel.fromJson(Map<String, dynamic> json) 
-    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1])];
-
-  void updateContents(int entryIndex, String newText) {
-    items[entryIndex].contents = newText;
-    notifyListeners();
-    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
-  }
-
   void updateChecked(int entryIndex, bool newValue) {
     items[entryIndex].completed = newValue;
     notifyListeners();
-    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
+    saveTimer?.reset();
   }
 
   void swap(int oldIndex, int newIndex) {
@@ -48,12 +56,17 @@ class TodoListModel extends ChangeNotifier {
     TodoEntry entry = items.removeAt(oldIndex);
     items.insert(newIndex, entry);
     notifyListeners();
-    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
+    saveTimer?.reset();
   }
 
   void appendNew() {
     items.add(TodoEntry(false, ""));
     notifyListeners();
+  }
+
+  void saveToDisk() {
+    print("SAVING?");
+    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
   }
 
   Map<String, dynamic> toJson() {
