@@ -67,12 +67,10 @@ class TodoItemList extends StatefulWidget {
 class _TodoItemListState extends State<TodoItemList> {
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
+    return ReorderableListView.builder(
       buildDefaultDragHandles: false,
-      children: [
-        for (int index = 0; index < Provider.of<TodoListModel>(context, listen: true).items.length; index++)
-        ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard(index: index,))
-      ],
+      itemCount: Provider.of<TodoListModel>(context, listen: true).items.length,
+      itemBuilder: (context, index) => ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard(index: index,)),
       onReorder:(oldIndex, newIndex) => Provider.of<TodoListModel>(context, listen: false).swap(oldIndex, newIndex),
     );
   }
