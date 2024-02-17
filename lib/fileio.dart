@@ -12,16 +12,17 @@ class FileIO {
   //Read from application's documents directory. Return empty string if not found.
   static Future<String> readFileFromDocs(String filename) async {
     String rval = "";
-    Directory directory = Directory("");
     try {
-      directory = await getApplicationDocumentsDirectory();
+      final Directory directory = await getApplicationDocumentsDirectory();
       final File file = File("${directory.path}/simple-todo/$filename");
-      rval = await file.readAsString();
+      if (await file.exists()) {
+        rval = await file.readAsString();
+      } else {
+        print("creating file");
+        File("${directory.path}/simple-todo/$filename").create(recursive: true);
+      }
     } on MissingPluginException catch(e) {
       print("Couldn't read file. File reading is not supported for web platforms!");
-    } on PathNotFoundException catch (e) {
-      print("creating file");
-      File("${directory.path}/simple-todo/$filename").create(recursive: true);
     }
     catch (e) {
       print(e.toString());
