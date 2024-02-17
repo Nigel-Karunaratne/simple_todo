@@ -1,19 +1,26 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:simple_todo/fileio.dart';
 
 class TodoListModel extends ChangeNotifier {
   List<TodoEntry> items;
+  bool loaded = true;
 
   TodoListModel(this.items);
-  
-  factory TodoListModel.empty() {
-    return TodoListModel([]);
-  }
 
-  //Gets most recent list in json file, or makes empty if none exists
-  factory TodoListModel.startupList() {
-    // return TodoListModel.empty();
-    return TodoListModel.fromJson(jsonDecode("{\"0\": [false, \"hello json\"],\n\"1\": [true, \"wowie zowie\"]}"));
+  TodoListModel.fromFile() : items=[], loaded = false {
+    updateFromFile();
+  }
+  
+  void updateFromFile() async {
+    String contents = await FileIO.readFileFromDocs("list.json");
+    if (contents != "") {
+      items = TodoListModel.fromJson(jsonDecode(contents)).items;
+    } else {
+      items = [];
+    }
+    loaded = true;
+    notifyListeners();
   }
 
   TodoListModel.fromJson(Map<String, dynamic> json) 
@@ -22,11 +29,13 @@ class TodoListModel extends ChangeNotifier {
   void updateContents(int entryIndex, String newText) {
     items[entryIndex].contents = newText;
     notifyListeners();
+    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
   }
 
   void updateChecked(int entryIndex, bool newValue) {
     items[entryIndex].completed = newValue;
     notifyListeners();
+    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
   }
 
   void swap(int oldIndex, int newIndex) {
@@ -36,6 +45,7 @@ class TodoListModel extends ChangeNotifier {
     TodoEntry entry = items.removeAt(oldIndex);
     items.insert(newIndex, entry);
     notifyListeners();
+    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
   }
 
   void appendNew() {

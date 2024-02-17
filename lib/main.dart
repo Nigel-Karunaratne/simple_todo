@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TodoListModel>(
-      create: (ctx) => TodoListModel([TodoEntry(false, "contents"), TodoEntry(true, "dnasl")]),
+      create: (ctx) => TodoListModel.fromFile(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Simple TODO',
@@ -52,7 +52,10 @@ class _TodoListViewState extends State<TodoListView> {
         onPressed: () => Provider.of<TodoListModel>(context, listen: false).appendNew(),
         child: const Icon(Icons.add),
       ),
-      body: const TodoItemList(),
+      // body: const TodoItemList(),
+      body: Consumer<TodoListModel>(
+        builder: (context, value, child) => value.loaded? const TodoItemList(): const LoadingItemsDisplay()
+      ),
     );
   }
 }
@@ -95,6 +98,28 @@ class NothingToSee extends StatelessWidget {
             textAlign: TextAlign.center,
           )
         ),
+      ),
+    );
+  }
+}
+
+class LoadingItemsDisplay extends StatelessWidget {
+  const LoadingItemsDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Loading..."),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+          ),
+          CircularProgressIndicator(
+            semanticsLabel: "Loading List items.",
+          ),
+        ],
       ),
     );
   }
