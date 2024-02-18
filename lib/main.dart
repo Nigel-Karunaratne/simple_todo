@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:simple_todo/models/listmodel.dart';
 import 'package:simple_todo/views/listitemcard.dart';
 import 'package:provider/provider.dart';
@@ -34,12 +37,38 @@ class TodoListView extends StatefulWidget {
 }
 
 class _TodoListViewState extends State<TodoListView> {
+
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+  @override
+  void initState() {
+    super.initState();
+    //If web, alert user that no saving :(
+    if (kIsWeb) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) => 
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 10),
+            content: const Text("Saving and Loading Lists is not supported in web browsers"),
+            action: SnackBarAction(
+              label: "Got it",
+              onPressed: () {},
+            ),
+          )
+        )
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("List Name"),
+        title: Builder(
+          builder: (context) => Platform.isIOS ? const Center(child: Text("Simple TODO"),): const Center(child: Text("Simple TODO")),
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
