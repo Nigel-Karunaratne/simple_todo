@@ -25,7 +25,6 @@ class TodoListModel extends ChangeNotifier {
 
   void updateContents(int entryIndex, String newText) {
     items[entryIndex].contents = newText;
-    notifyListeners();
     saveTimer?.reset();
   }
   
