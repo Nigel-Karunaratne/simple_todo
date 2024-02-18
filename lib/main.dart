@@ -143,6 +143,9 @@ class _TodoListViewState extends State<TodoListView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Provider.of<TodoListModel>(context, listen: false).appendNew(),
         child: const Icon(Icons.add),
+        // elevation: 0,
+        // hoverElevation: 0,
+        // shape: RoundedRectangleBorder(side: BorderSide(width: 2,color: Theme.of(context).colorScheme.onPrimaryContainer),borderRadius: BorderRadius.circular(20)),
       ),
       // body: const TodoItemList(),
       body: Consumer<TodoListModel>(
