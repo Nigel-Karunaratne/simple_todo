@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:simple_todo/models/listmodel.dart';
+import 'package:simple_todo/views/aboutview.dart';
 import 'package:simple_todo/views/listitemcard.dart';
 import 'package:provider/provider.dart';
 
@@ -139,6 +140,23 @@ class _TodoListViewState extends State<TodoListView> {
             },
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.question_mark_rounded, color: Theme.of(context).colorScheme.onPrimaryContainer,),
+          onPressed: () => showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) => AlertDialog(
+              title: const Text("About Simple TODO"),
+              content: const AboutAppView(),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Provider.of<TodoListModel>(context, listen: false).appendNew(),
