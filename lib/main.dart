@@ -36,6 +36,8 @@ class TodoListView extends StatefulWidget {
   State<TodoListView> createState() => _TodoListViewState();
 }
 
+enum DeleteItemSelect {deleteChecked, deleteAll}
+
 class _TodoListViewState extends State<TodoListView> {
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
@@ -69,9 +71,22 @@ class _TodoListViewState extends State<TodoListView> {
         title: const Center(child: Text("Simple TODO")),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          IconButton(
-            icon: Icon(Icons.disabled_by_default_rounded, color: Theme.of(context).colorScheme.primary, semanticLabel: "Delete checked entries",),
-            onPressed: () => showDialog(
+          PopupMenuButton<DeleteItemSelect>(
+            icon: Icon(Icons.more_vert, color: Theme.of(context).colorScheme.onSecondaryContainer,),
+            itemBuilder: (context) => <PopupMenuItem<DeleteItemSelect>>[
+              const PopupMenuItem<DeleteItemSelect>(
+                value: DeleteItemSelect.deleteChecked,
+                child: Text("Delete all checked entries")
+              ),
+              const PopupMenuItem<DeleteItemSelect>(
+                value: DeleteItemSelect.deleteAll,
+                child: Text("Delete all entries")
+              ),
+            ],
+            onSelected: (value) {
+              switch (value) {
+                case DeleteItemSelect.deleteChecked:
+                  showDialog(
               context: context,
               barrierDismissible: true,
               builder: (context) => AlertDialog(
@@ -93,11 +108,10 @@ class _TodoListViewState extends State<TodoListView> {
                   ),
                 ],
               )
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.primary, semanticLabel: "Delete all entries",),
-            onPressed: () => showDialog(
+                  );
+                  break;
+                case DeleteItemSelect.deleteAll:
+                  showDialog(
               context: context,
               barrierDismissible: true,
               builder: (context) => AlertDialog(
@@ -119,11 +133,10 @@ class _TodoListViewState extends State<TodoListView> {
                   ),
                 ],
               )
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.question_mark_rounded, color: Theme.of(context).colorScheme.primary,),
-            onPressed: (){},
+                  );
+                  break;
+              }
+            },
           ),
         ],
       ),
