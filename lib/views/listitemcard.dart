@@ -20,40 +20,51 @@ class _ListItemCardState extends State<ListItemCard> {
   @override
   Widget build(BuildContext context) {
     controller.text = Provider.of<TodoListModel>(context).items[widget.index].contents;
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      elevation: 0,
-      color: Theme.of(context).colorScheme.primaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          children: [
-            Checkbox(
-              value: Provider.of<TodoListModel>(context).items[widget.index].completed,
-              onChanged: (value) => Provider.of<TodoListModel>(context, listen: false).updateChecked(widget.index, value!),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
-            Expanded(
-              child: TextField(
-                onChanged: (newtext) => Provider.of<TodoListModel>(context, listen: false).updateContents(widget.index, newtext),
-                expands: true,
-                maxLines: null,
-                minLines: null,
-                decoration: null,
-                maxLength: itemMaxLength,
-                controller: controller,
-                style: Provider.of<TodoListModel>(context, listen: false).items[widget.index].completed 
-                  ? const TextStyle(decoration: TextDecoration.lineThrough) 
-                  : null,
+    return Dismissible(
+      key: Key("Card ${widget.index}"),
+      onDismissed: (direction) => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
+      background: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.tertiaryContainer,
+          borderRadius: const BorderRadius.all(Radius.circular(15))
+        ),
+        child: const Icon(Icons.delete),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        elevation: 0,
+        color: Theme.of(context).colorScheme.primaryContainer,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Checkbox(
+                value: Provider.of<TodoListModel>(context).items[widget.index].completed,
+                onChanged: (value) => Provider.of<TodoListModel>(context, listen: false).updateChecked(widget.index, value!),
               ),
-            ),
-            IconButton(
-              onPressed: () => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
-              icon: const Icon(Icons.delete),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
-            const Icon(Icons.drag_handle_rounded),
-          ],
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
+              Expanded(
+                child: TextField(
+                  onChanged: (newtext) => Provider.of<TodoListModel>(context, listen: false).updateContents(widget.index, newtext),
+                  expands: true,
+                  maxLines: null,
+                  minLines: null,
+                  decoration: null,
+                  maxLength: itemMaxLength,
+                  controller: controller,
+                  style: Provider.of<TodoListModel>(context, listen: false).items[widget.index].completed 
+                    ? const TextStyle(decoration: TextDecoration.lineThrough) 
+                    : null,
+                ),
+              ),
+              IconButton(
+                onPressed: () => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
+                icon: const Icon(Icons.delete),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+              const Icon(Icons.drag_handle_rounded),
+            ],
+          ),
         ),
       ),
     );
