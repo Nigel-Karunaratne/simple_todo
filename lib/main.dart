@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -88,52 +87,52 @@ class _TodoListViewState extends State<TodoListView> {
               switch (value) {
                 case DeleteItemSelect.deleteChecked:
                   showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (context) => AlertDialog(
-                title: const Text('Delete all checked entries?'),
-                content: SingleChildScrollView(
-                  child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfCheckedEntriesStr()}."),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Yes'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Provider.of<TodoListModel>(context, listen: false).removeAllCheckedEntries();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('No'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              )
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete all checked entries?'),
+                      content: SingleChildScrollView(
+                        child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfCheckedEntriesStr()}."),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Yes'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Provider.of<TodoListModel>(context, listen: false).removeAllCheckedEntries();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('No'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    )
                   );
                   break;
                 case DeleteItemSelect.deleteAll:
                   showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (context) => AlertDialog(
-                title: const Text('Delete ALL entries?'),
-                content: SingleChildScrollView(
-                  child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfEntriesStr()}."),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Yes'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Provider.of<TodoListModel>(context, listen: false).removeAllEntries();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('No'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              )
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete ALL entries?'),
+                      content: SingleChildScrollView(
+                        child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfEntriesStr()}."),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('Yes'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Provider.of<TodoListModel>(context, listen: false).removeAllEntries();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('No'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    )
                   );
                   break;
               }
