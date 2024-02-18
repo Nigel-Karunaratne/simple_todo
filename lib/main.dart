@@ -135,7 +135,16 @@ class _TodoListViewState extends State<TodoListView> {
       ),
       // body: const TodoItemList(),
       body: Consumer<TodoListModel>(
-        builder: (context, value, child) => value.loaded? const TodoItemList(): const LoadingItemsDisplay()
+        builder: (context, value, child) {
+          if (!value.loaded) {
+            return const LoadingItemsDisplay();
+          }
+          if (value.items.isEmpty) {
+            return const NothingToSee();
+          }
+          return const TodoItemList();
+        },
+        
       ),
     );
   }
