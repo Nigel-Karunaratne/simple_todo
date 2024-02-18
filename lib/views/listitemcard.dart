@@ -57,11 +57,11 @@ class _ListItemCardState extends State<ListItemCard> {
                     : null,
                 ),
               ),
-              IconButton(
-                onPressed: () => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
-                icon: const Icon(Icons.delete),
-              ),
-              const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
+              // IconButton(
+              //   onPressed: () => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
+              //   icon: const Icon(Icons.delete),
+              // ),
+              // const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
               const Icon(Icons.drag_handle_rounded),
             ],
           ),
