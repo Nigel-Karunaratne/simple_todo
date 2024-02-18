@@ -49,7 +49,10 @@ class _ListItemCardState extends State<ListItemCard> {
                 minLines: null,
                 decoration: null,
                 maxLength: itemMaxLength,
-                controller: controller
+                controller: controller,
+                style: Provider.of<TodoListModel>(context, listen: false).items[widget.index].completed 
+                  ? const TextStyle(decoration: TextDecoration.lineThrough) 
+                  : null,
               ),
             ),
             const Icon(Icons.drag_handle_rounded),
