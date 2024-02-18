@@ -163,7 +163,11 @@ class _TodoItemListState extends State<TodoItemList> {
     return ReorderableListView.builder(
       buildDefaultDragHandles: false,
       itemCount: Provider.of<TodoListModel>(context, listen: true).items.length,
-      itemBuilder: (context, index) => ReorderableDragStartListener(key: Key("$index"), index: index, child: ListItemCard(index: index,)),
+      itemBuilder: (context, index) => ReorderableDragStartListener(
+        key: Key("rdsl$index"),
+        index: index,
+        child: ListItemCard(index: index,)
+      ),
       onReorder:(oldIndex, newIndex) => Provider.of<TodoListModel>(context, listen: false).swap(oldIndex, newIndex),
     );
   }
