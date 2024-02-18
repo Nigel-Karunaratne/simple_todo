@@ -66,9 +66,7 @@ class _TodoListViewState extends State<TodoListView> {
       key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Builder(
-          builder: (context) => Platform.isIOS ? const Center(child: Text("Simple TODO"),): const Center(child: Text("Simple TODO")),
-        ),
+        title: const Center(child: Text("Simple TODO")),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
