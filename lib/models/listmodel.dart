@@ -62,10 +62,32 @@ class TodoListModel extends ChangeNotifier {
     items.add(TodoEntry(false, ""));
     notifyListeners();
   }
+
+  void removeAllCheckedEntries() {
+    items.removeWhere((element) => element.completed);
+    notifyListeners();
+    saveTimer?.reset();
+  }
+
+  void removeAllEntries() {
+    items.clear();
+    notifyListeners();
+    saveTimer?.reset();
+  }
+
   void removeEntryAt(int index) {
     items.removeAt(index);
     notifyListeners();
     saveTimer?.reset();
+  }
+
+  String numOfCheckedEntriesStr() {
+    int num = items.where((element) => element.completed).length;
+    return "${num == items.length ? "all" : "$num"} item${num == 1 ? "" : "s"}";
+  }
+
+  String numOfEntriesStr() {
+    return "${items.length} item${items.length == 1 ? "" : "s"}";
   }
 
   void saveToDisk() {
