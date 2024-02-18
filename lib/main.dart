@@ -72,9 +72,61 @@ class _TodoListViewState extends State<TodoListView> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
+            icon: Icon(Icons.disabled_by_default_rounded, color: Theme.of(context).colorScheme.primary, semanticLabel: "Delete checked entries",),
+            onPressed: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (context) => AlertDialog(
+                title: const Text('Delete all checked entries?'),
+                content: SingleChildScrollView(
+                  child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfCheckedEntriesStr()}."),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Provider.of<TodoListModel>(context, listen: false).removeAllCheckedEntries();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('No'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              )
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.primary, semanticLabel: "Delete all entries",),
+            onPressed: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (context) => AlertDialog(
+                title: const Text('Delete ALL entries?'),
+                content: SingleChildScrollView(
+                  child: Text("Will delete ${Provider.of<TodoListModel>(context, listen: false).numOfEntriesStr()}."),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Yes'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Provider.of<TodoListModel>(context, listen: false).removeAllEntries();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('No'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              )
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.question_mark_rounded, color: Theme.of(context).colorScheme.primary,),
             onPressed: (){},
-            icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.primary,)
-          )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
