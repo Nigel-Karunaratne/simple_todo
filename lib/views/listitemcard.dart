@@ -58,4 +58,10 @@ class _ListItemCardState extends State<ListItemCard> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }
