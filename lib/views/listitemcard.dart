@@ -24,14 +24,6 @@ class _ListItemCardState extends State<ListItemCard> {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       elevation: 0,
       color: Theme.of(context).colorScheme.primaryContainer,
-      // child: CheckboxListTile(
-      //   onChanged: (value) {},
-      //   value: false,
-      //   controlAffinity: ListTileControlAffinity.leading,
-      //   title: TextField(
-      //     controller: TextEditingController(text: "String!"),
-      //   ),
-      // ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -55,6 +47,11 @@ class _ListItemCardState extends State<ListItemCard> {
                   : null,
               ),
             ),
+            IconButton(
+              onPressed: () => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
+              icon: const Icon(Icons.delete),
+            ),
+            const Padding(padding: EdgeInsets.symmetric(horizontal: 4)),
             const Icon(Icons.drag_handle_rounded),
           ],
         ),

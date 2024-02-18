@@ -63,6 +63,11 @@ class TodoListModel extends ChangeNotifier {
     items.add(TodoEntry(false, ""));
     notifyListeners();
   }
+  void removeEntryAt(int index) {
+    items.removeAt(index);
+    notifyListeners();
+    saveTimer?.reset();
+  }
 
   void saveToDisk() {
     print("SAVING");
