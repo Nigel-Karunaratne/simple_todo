@@ -20,20 +20,54 @@ class _ListItemCardState extends State<ListItemCard> {
   @override
   Widget build(BuildContext context) {
     controller.text = Provider.of<TodoListModel>(context).items[widget.index].contents;
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+
     return Dismissible(
       key: Key("Card ${widget.index}"),
       onDismissed: (direction) => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
       background: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiaryContainer,
-          borderRadius: const BorderRadius.all(Radius.circular(15))
+          color: colorScheme.tertiaryContainer,
         ),
-        child: const Icon(Icons.delete),
+        padding: const EdgeInsets.only(left: 20.0),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Icon(Icons.delete),
+          ],
+        ),
       ),
+      secondaryBackground: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.tertiaryContainer,
+        ),
+        padding: const EdgeInsets.only(right: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Icon(Icons.delete, color: colorScheme.onTertiaryContainer,),
+          ],
+        ),
+      ),
+/*       secondaryBackground: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              // shape: BoxShape.values(),
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).colorScheme.tertiaryContainer
+            ),
+            child: Icon(Icons.delete, color: Theme.of(context).colorScheme.onTertiaryContainer,),
+          ),
+          const Padding(padding: EdgeInsets.only(right: 20)),
+        ],
+      ), */
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         elevation: 0,
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: colorScheme.primaryContainer,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
