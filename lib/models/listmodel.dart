@@ -59,8 +59,10 @@ class TodoListModel extends ChangeNotifier {
   }
 
   void appendNew() {
-    items.add(TodoEntry(false, ""));
+    // items.add(TodoEntry(false, ""));
+    items.add(TodoEntry(false, "Entry #${items.length+1}"));
     notifyListeners();
+    saveTimer?.reset();
   }
 
   void removeAllCheckedEntries() {
