@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_todo/fileio.dart';
 
 class TodoListModel extends ChangeNotifier {
+  static const String fileName = "list.json";
   List<TodoEntry> items;
   bool loaded = true;
   RestartableTimer? saveTimer;
@@ -20,8 +21,7 @@ class TodoListModel extends ChangeNotifier {
   }
 
   TodoListModel.fromJson(Map<String, dynamic> json) 
-    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1])]/* ,
-      saveTimer = RestartableTimer(const Duration(), () => print("TIMER ERROR: C NOT CREATED")) */;
+    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1])];
 
   void updateContents(int entryIndex, String newText) {
     items[entryIndex].contents = newText;
@@ -30,7 +30,7 @@ class TodoListModel extends ChangeNotifier {
   }
   
   void _updateFromFile() async {
-    String contents = await FileIO.readFileFromDocs("list.json");
+    String contents = await FileIO.readFileFromDocs(fileName);
     if (contents != "") {
       items = TodoListModel.fromJson(jsonDecode(contents)).items;
     } else {
@@ -65,8 +65,8 @@ class TodoListModel extends ChangeNotifier {
   }
 
   void saveToDisk() {
-    print("SAVING?");
-    FileIO.writeFileToDocs("list.json", json.encode(toJson()));
+    print("SAVING");
+    FileIO.writeFileToDocs(fileName, json.encode(toJson()));
   }
 
   Map<String, dynamic> toJson() {
