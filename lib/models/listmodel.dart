@@ -93,7 +93,6 @@ class TodoListModel extends ChangeNotifier {
   }
 
   void saveToDisk() {
-    print("SAVING");
     FileIO.writeFileToDocs(fileName, json.encode(toJson()));
   }
 
