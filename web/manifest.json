@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#b490f8",
     "theme_color": "#b490f8",
-    "description": "A new Flutter project.",
+    "description": "A simple TODO list app",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
