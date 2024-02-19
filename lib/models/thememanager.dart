@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: constant_identifier_names
 enum ThemeType {Default, Purple, Orange, LightGreen, Blue, Red, Green, Pink}
@@ -9,6 +10,8 @@ class ThemeManager extends ChangeNotifier {
 
   late ThemeData currentTheme;
   // late ThemeData currentDarkTheme;
+
+  SharedPreferences? prefs;
 
   static Map<ThemeType, Color> themeTypes = {
     ThemeType.Purple: Colors.purple[200]!,
@@ -23,11 +26,17 @@ class ThemeManager extends ChangeNotifier {
   ThemeManager() {
     currentTheme = defaultTheme;
     // currentDarkTheme = defaultTheme;
+    initializePreferences();
   }
 
   ThemeManager.fromString(String themeName) {
     changeFromName(ThemeType.values.byName(themeName));
     notifyListeners();
+    initializePreferences();
+  }
+
+  void initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   void changeFromName(ThemeType type) {
@@ -65,6 +74,9 @@ class ThemeManager extends ChangeNotifier {
         currentTheme = defaultTheme;
         // currentDarkTheme = defaultDarkTheme;
         break;
+    }
+    if (prefs != null) {
+      prefs!.setString("theme", type.name);
     }
     notifyListeners();
   }
