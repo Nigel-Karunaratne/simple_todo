@@ -2,27 +2,34 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:simple_todo/models/listmodel.dart';
+import 'package:simple_todo/models/thememanager.dart';
 import 'package:simple_todo/views/aboutview.dart';
 import 'package:simple_todo/views/listitemcard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String themeStr = prefs.getString("theme") ?? "default";
+  runApp(BaseApp(startTheme: themeStr,));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BaseApp extends StatelessWidget {
+  final String startTheme;
+  const BaseApp({super.key, required this.startTheme});
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TodoListModel>(
-      create: (ctx) => TodoListModel.fromFile(),
-      child: MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TodoListModel>(create: (_) => TodoListModel.fromFile()),
+        ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager.name(startTheme)),
+      ],
+      builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Simple TODO',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: Provider.of<ThemeManager>(context, listen: true).currentTheme,
+        // darkTheme: Provider.of<ThemeManager>(context, listen: true).currentDarkTheme,
         home: const TodoListView(),
       ),
     );
@@ -36,7 +43,7 @@ class TodoListView extends StatefulWidget {
   State<TodoListView> createState() => _TodoListViewState();
 }
 
-enum DeleteItemSelect {deleteChecked, deleteAll}
+enum PopupItemSelect {deleteChecked, deleteAll, changeColor}
 
 class _TodoListViewState extends State<TodoListView> {
 
@@ -71,21 +78,25 @@ class _TodoListViewState extends State<TodoListView> {
         title: const Center(child: Text("Simple TODO")),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          PopupMenuButton<DeleteItemSelect>(
+          PopupMenuButton<PopupItemSelect>(
             icon: Icon(Icons.more_vert, color: Theme.of(context).colorScheme.onSecondaryContainer,),
-            itemBuilder: (context) => <PopupMenuItem<DeleteItemSelect>>[
-              const PopupMenuItem<DeleteItemSelect>(
-                value: DeleteItemSelect.deleteChecked,
+            itemBuilder: (context) => <PopupMenuItem<PopupItemSelect>>[
+              const PopupMenuItem<PopupItemSelect>(
+                value: PopupItemSelect.deleteChecked,
                 child: Text("Delete all checked entries")
               ),
-              const PopupMenuItem<DeleteItemSelect>(
-                value: DeleteItemSelect.deleteAll,
+              const PopupMenuItem<PopupItemSelect>(
+                value: PopupItemSelect.deleteAll,
                 child: Text("Delete all entries")
+              ),
+              const PopupMenuItem<PopupItemSelect>(
+                value: PopupItemSelect.changeColor,
+                child: Text("Change app theme")
               ),
             ],
             onSelected: (value) {
               switch (value) {
-                case DeleteItemSelect.deleteChecked:
+                case PopupItemSelect.deleteChecked:
                   showDialog(
                     context: context,
                     barrierDismissible: true,
@@ -110,7 +121,7 @@ class _TodoListViewState extends State<TodoListView> {
                     )
                   );
                   break;
-                case DeleteItemSelect.deleteAll:
+                case PopupItemSelect.deleteAll:
                   showDialog(
                     context: context,
                     barrierDismissible: true,
@@ -129,6 +140,41 @@ class _TodoListViewState extends State<TodoListView> {
                         ),
                         TextButton(
                           child: const Text('No'),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    )
+                  );
+                  break;
+                case PopupItemSelect.changeColor:
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Change color scheme"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            IconButton(
+                              onPressed: () => Provider.of<ThemeManager>(context, listen: false).changeFromName("purple"),
+                              icon: Icon(
+                                Icons.circle,
+                                color: Colors.purple[200],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => Provider.of<ThemeManager>(context, listen: false).changeFromName("orange"),
+                              icon: Icon(
+                                Icons.circle,
+                                color: Colors.orange[200],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text('Exit'),
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                       ],
