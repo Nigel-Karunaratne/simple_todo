@@ -129,21 +129,15 @@ class _TodoListViewState extends State<TodoListView> {
                       title: const Text("Change color scheme"),
                       content: SingleChildScrollView(
                         child: Column(
-                          children: [
-                            IconButton(
-                              onPressed: () => Provider.of<ThemeManager>(context, listen: false).changeFromName("purple"),
-                              icon: Icon(
-                                Icons.circle,
-                                color: Colors.purple[200],
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => Provider.of<ThemeManager>(context, listen: false).changeFromName("orange"),
-                              icon: Icon(
-                                Icons.circle,
-                                color: Colors.orange[200],
-                              ),
-                            )
+                          children: <Widget>[
+                            for (final ThemeType t in ThemeManager.themeTypes.keys) 
+                              IconButton(
+                                onPressed: () => Provider.of<ThemeManager>(context, listen: false).changeFromName(t),
+                                icon: Icon(
+                                  Icons.circle,
+                                  color: ThemeManager.themeTypes[t]
+                                )
+                              )
                           ],
                         ),
                       ),

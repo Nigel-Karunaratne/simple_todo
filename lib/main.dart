@@ -9,7 +9,7 @@ import 'package:simple_todo/views/todolistview.dart';
 
 void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String themeStr = prefs.getString("theme") ?? "default";
+  String themeStr = prefs.getString("theme") ?? "Default";
   runApp(BaseApp(startTheme: themeStr,));
 }
 
@@ -22,7 +22,7 @@ class BaseApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TodoListModel>(create: (_) => TodoListModel.fromFile()),
-        ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager.name(startTheme)),
+        ChangeNotifierProvider<ThemeManager>(create: (_) => ThemeManager.fromString(startTheme)),
       ],
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
