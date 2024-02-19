@@ -128,7 +128,7 @@ class _TodoListViewState extends State<TodoListView> {
                     builder: (context) => AlertDialog(
                       title: const Text("Change color scheme"),
                       content: SingleChildScrollView(
-                        child: Column(
+                        child: Wrap(
                           children: <Widget>[
                             for (final ThemeType t in ThemeManager.themeTypes.keys) 
                               IconButton(
