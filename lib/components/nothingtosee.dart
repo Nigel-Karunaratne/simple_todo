@@ -15,7 +15,7 @@ class NothingToSee extends StatelessWidget {
         ),
         child: const Center(
           child: Text(
-            "Nothing to do.\nTo add, use the + button.",
+            "You currently have\nnothing to do :)",
             textAlign: TextAlign.center,
           )
         ),
