@@ -15,7 +15,7 @@ class ThemeManager extends ChangeNotifier {
     ThemeType.Orange: Colors.orange[200]!,
     ThemeType.LightGreen: Colors.lightGreen[200]!,
     ThemeType.Blue: Colors.blue[200]!,
-    ThemeType.Red: Colors.red[300]!,
+    ThemeType.Red: Colors.red[200]!,
     ThemeType.Green: Colors.green[200]!,
     ThemeType.Pink: Colors.pink[200]!,
   };
