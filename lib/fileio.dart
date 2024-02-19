@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart'; //For catching MissingPluginException
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
@@ -25,15 +25,16 @@ class FileIO {
       if (await file.exists()) {
         rval = await file.readAsString();
       } else {
-        print("creating file");
+        // print("creating file");
         File("${directory.path}/simple-todo/$filename").create(recursive: true);
       }
-    } on MissingPluginException catch(e) {
-      print("Couldn't read file. File reading may not be supported for this platform.");
-    }
+    } 
+    // on MissingPluginException catch(e) {
+    //   print("Couldn't read file. File reading may not be supported for this platform.");
+    // }
     catch (e) {
-      print(e.toString());
-      print("Couldn't read file");
+      // print(e.toString());
+      // print("Couldn't read file");
     }
     return rval;
   }
