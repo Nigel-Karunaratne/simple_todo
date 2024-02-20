@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_todo/views/todolistview.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); //Needed because main() is async (i think?)
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String themeStr = prefs.getString("theme") ?? "Default";
   runApp(BaseApp(startTheme: themeStr,));
