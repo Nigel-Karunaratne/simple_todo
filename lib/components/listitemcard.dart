@@ -23,8 +23,11 @@ class _ListItemCardState extends State<ListItemCard> {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Dismissible(
-      key: Key("Card ${widget.index}"),
-      onDismissed: (direction) => Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index),
+      key: Key("Card ${Provider.of<TodoListModel>(context, listen: false).items[widget.index].uid}"),
+      // key: UniqueKey(),
+      onDismissed: (direction) {
+        Provider.of<TodoListModel>(context, listen: false).removeEntryAt(widget.index);
+      },
       background: Container(
         decoration: BoxDecoration(
           color: colorScheme.tertiaryContainer,

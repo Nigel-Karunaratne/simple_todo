@@ -9,6 +9,9 @@ class TodoListModel extends ChangeNotifier {
   bool loaded = true;
   RestartableTimer? saveTimer;
 
+  static int uidCounter=0;
+  static int uidNext() => ++uidCounter;
+
   TodoListModel(this.items){
     saveTimer = RestartableTimer(const Duration(seconds: 1), () => saveToDisk());
     saveTimer?.cancel();
@@ -21,7 +24,7 @@ class TodoListModel extends ChangeNotifier {
   }
 
   TodoListModel.fromJson(Map<String, dynamic> json) 
-    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1])];
+    : items = [for(int i = 0; i < json.length; i++) TodoEntry(json[i.toString()][0], json[i.toString()][1], uidNext())];
 
   void updateContents(int entryIndex, String newText) {
     items[entryIndex].contents = newText;
@@ -60,7 +63,7 @@ class TodoListModel extends ChangeNotifier {
 
   void appendNew() {
     // items.add(TodoEntry(false, ""));
-    items.add(TodoEntry(false, "Entry #${items.length+1}"));
+    items.add(TodoEntry(false, "Entry #${items.length+1}", uidNext()));
     notifyListeners();
     saveTimer?.reset();
   }
@@ -109,6 +112,7 @@ class TodoListModel extends ChangeNotifier {
 class TodoEntry {
   bool completed;
   String contents;
+  late int uid;
 
-  TodoEntry(this.completed, this.contents);
+  TodoEntry(this.completed, this.contents, this.uid);
 }
